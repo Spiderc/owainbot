@@ -22,11 +22,20 @@ import com.vdurmont.emoji.EmojiParser;
 @SpringBootApplication
 public class ServerInitializer implements ApplicationRunner {
 	public void run(ApplicationArguments args) throws FileNotFoundException, IOException {
-		Properties properties = new Properties();
-		properties.load(new FileInputStream("src/main/resources/config.properties"));
+		boolean prod = true;
 		
-//		String token = properties.getProperty("prod");
-		String token = properties.getProperty("test");
+		String token = "";
+		if(prod) {
+			Properties properties = new Properties();
+			properties.load(new FileInputStream("webapps/owainbot/WEB-INF/classes/config.properties"));
+			
+			token = properties.getProperty("prod");
+		} else {
+			Properties properties = new Properties();
+			properties.load(new FileInputStream("src/main/resources/config.properties"));
+			
+			token = properties.getProperty("test");
+		}
 
 		DiscordApi api = new DiscordApiBuilder().setToken(token).login().join();
 
@@ -41,6 +50,8 @@ public class ServerInitializer implements ApplicationRunner {
 				event.getChannel().sendMessage(Constants.BENSI_LINK);
 			} else if (event.getMessageContent().equalsIgnoreCase("!ben si redux")) {
 				event.getChannel().sendMessage(Constants.BENREDUX_LINK);
+			} else if (event.getMessageContent().equalsIgnoreCase("!source")) {
+				event.getChannel().sendMessage(Constants.SOURCE);
 			} else if (event.getMessageContent().startsWith("!poll ")) {
 				createPoll(event);
 			}
