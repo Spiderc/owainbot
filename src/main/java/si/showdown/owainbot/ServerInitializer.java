@@ -1,9 +1,9 @@
 package si.showdown.owainbot;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
@@ -38,6 +38,8 @@ public class ServerInitializer implements ApplicationRunner {
 		}
 
 		DiscordApi api = new DiscordApiBuilder().setToken(token).login().join();
+		
+		api.updateActivity("!help for commands");
 
 		api.addMessageCreateListener(event -> {
 			if (event.getMessageContent().equalsIgnoreCase("!help")) {
@@ -52,6 +54,8 @@ public class ServerInitializer implements ApplicationRunner {
 				event.getChannel().sendMessage(Constants.BENREDUX_LINK);
 			} else if (event.getMessageContent().equalsIgnoreCase("!source")) {
 				event.getChannel().sendMessage(Constants.SOURCE);
+			} else if (event.getMessageContent().equalsIgnoreCase("!countdown")) {
+				event.getChannel().sendMessage(getCountDown());
 			} else if (event.getMessageContent().startsWith("!poll ")) {
 				createPoll(event);
 			}
@@ -89,5 +93,28 @@ public class ServerInitializer implements ApplicationRunner {
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private static String getCountDown() {
+		String message = Constants.COUNTDOWN;
+		
+		Calendar target = Calendar.getInstance();
+		target.set(Calendar.DAY_OF_MONTH, 26);
+		target.set(Calendar.MONTH, 6);
+		target.set(Calendar.HOUR_OF_DAY, 0);
+		target.set(Calendar.MINUTE, 0);
+		target.set(Calendar.SECOND, 0);
+		target.set(Calendar.MILLISECOND, 0);
+		
+		Calendar today = Calendar.getInstance();
+		today.set(Calendar.HOUR_OF_DAY, 0);
+		today.set(Calendar.MINUTE, 0);
+		today.set(Calendar.SECOND, 0);
+		today.set(Calendar.MILLISECOND, 0);
+		
+		long difference = target.getTime().getTime() - today.getTime().getTime();
+		int dayCount = Math.toIntExact(difference / (1000 * 60 * 60 * 24));
+		
+		return message.replace("DAYCOUNT", dayCount + "");
 	}
 }

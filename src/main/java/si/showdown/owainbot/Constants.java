@@ -10,7 +10,9 @@ public class Constants {
 	
 	public static final String POLL_INTRO = "POLL_USER seeks your advice on naming their weapon! Oh... that's not it?";
 	
-	public static final String HELP = "These are the following I can run:\n![bard/eb/ben si/ben si redux]:\n\t\tReturns a link to the story.\n!poll question;option1;option2;option3...:\n\t\tCreates a poll with up to ten options.\n!source:\n\t\tReturns a link to my source code.";
+	public static final String HELP = "These are the commands I can run:\n![bard/eb/ben si/ben si redux]:\n\t\tReturns a link to the story.\n!poll question;option1;option2;option3...:\n\t\tCreates a poll with up to ten options.\n!countdown:\n\t\tReturns how long until the release of 3 Houses.\n!source:\n\t\tReturns a link to my source code.";
 	
 	public static final String SOURCE = "https://github.com/Spiderc/owainbot";
+	
+	public static final String COUNTDOWN = "There are only DAYCOUNT days until my legendary retelling of the epic of Three Houses and the unveiling of my newest attack!";
 }
