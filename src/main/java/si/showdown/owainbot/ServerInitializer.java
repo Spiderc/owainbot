@@ -13,6 +13,7 @@ import org.javacord.api.DiscordApiBuilder;
 import org.javacord.api.entity.channel.ServerTextChannel;
 import org.javacord.api.entity.channel.ServerVoiceChannel;
 import org.javacord.api.entity.message.Message;
+import org.javacord.api.entity.permission.Role;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
@@ -61,6 +62,10 @@ public class ServerInitializer implements ApplicationRunner {
 				rollDice(event);
 			} else if (event.getMessageContent().startsWith("!play ")) {
 				play(event);
+			} else if (event.getMessageContent().startsWith("!addrole ")) {
+				addRole(event);
+			} else if (event.getMessageContent().startsWith("!removerole ")) {
+				removeRole(event);
 			}
 		});
 
@@ -176,6 +181,44 @@ public class ServerInitializer implements ApplicationRunner {
 
 		if (server.getConnectedVoiceChannel(user).isPresent()) {
 			ServerVoiceChannel voiceChannel = event.getMessage().getServer().get().getConnectedVoiceChannel(user).get();
+		}
+	}
+
+	private static void addRole(MessageCreateEvent event) {
+		User user = event.getMessageAuthor().asUser().get();
+		Server server = event.getMessage().getServer().get();
+
+		String role = event.getMessageContent().substring("!addrole ".length());
+		Role targetRole = null;
+		
+		for(Role serverRole:server.getRoles()) {
+			if(serverRole.getName().equals(role)) {
+				targetRole = serverRole;
+				break;
+			}
+		}
+		
+		if(targetRole != null) {
+			user.addRole(targetRole);
+		}
+	}
+
+	private static void removeRole(MessageCreateEvent event) {
+		User user = event.getMessageAuthor().asUser().get();
+		Server server = event.getMessage().getServer().get();
+		
+		String role = event.getMessageContent().substring("!removerole ".length());
+		Role targetRole = null;
+		
+		for(Role userRole:user.getRoles(server)) {
+			if(userRole.getName().equals(role)) {
+				targetRole = userRole;
+				break;
+			}
+		}
+		
+		if(targetRole != null) {
+			user.removeRole(targetRole);
 		}
 	}
 }
