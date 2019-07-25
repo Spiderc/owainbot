@@ -53,6 +53,8 @@ public class ServerInitializer implements ApplicationRunner {
 				event.getChannel().sendMessage(Constants.EB_LINK);
 			} else if (event.getMessageContent().equalsIgnoreCase("!source")) {
 				event.getChannel().sendMessage(Constants.SOURCE);
+			} else if (event.getMessageContent().equalsIgnoreCase("!roles")) {
+				roles(event);
 			} else if (event.getMessageContent().equalsIgnoreCase("!attack")) {
 				attack(event);
 			} else if (event.getMessageContent().startsWith("!poll ")) {
@@ -77,6 +79,28 @@ public class ServerInitializer implements ApplicationRunner {
 				}
 			}
 		});
+	}
+	
+	private static void roles(MessageCreateEvent event) {
+		Server server = event.getMessage().getServer().get();
+		Role botRole = null;
+		
+		for(Role role:event.getApi().getYourself().getRoles(server)) {
+			if(role.isManaged() && !role.isEveryoneRole()) {
+				botRole = role;
+			}
+		}
+		
+		String roles = "```";
+		for(Role role:server.getRoles()) {
+			if(!role.isManaged() && !role.isEveryoneRole()) {
+				roles = roles + "\n" + role.getName() + ": " + role.getUsers().size();
+			} else if(botRole != null && role == botRole) {
+				break;
+			}
+		}
+		
+		event.getChannel().sendMessage(roles + "```");
 	}
 	
 	private static void attack(MessageCreateEvent event) {
