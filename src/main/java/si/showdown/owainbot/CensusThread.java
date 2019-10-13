@@ -33,7 +33,8 @@ public class CensusThread implements Runnable {
 	}
 
 	private static void census() {
-		if (event.getMessage().getUserAuthor().get().getId() == 116331879635877894L) {
+		long callingUser = event.getMessage().getUserAuthor().get().getId();
+		if (callingUser == 116331879635877894L || callingUser == 265604183183327242L || callingUser == 309952892461121537L || callingUser == 614451167015206924L) {
 			Server server = event.getMessage().getServer().get();
 
 			Calendar calendar = Calendar.getInstance();
@@ -91,8 +92,6 @@ public class CensusThread implements Runnable {
 				result = result + "\n" + user + ": " + sortedMap.get(user);
 			}
 			result = result + "```";
-
-			System.out.println(result);
 
 			event.getChannel().sendMessage(result);
 		}
