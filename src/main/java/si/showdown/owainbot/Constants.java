@@ -9,7 +9,7 @@ public class Constants {
 	
 	public static final String POLL_INTRO = "POLL_USER seeks your advice on naming their weapon! Oh... that's not it?";
 	
-	public static final String HELP = "These are the commands I can run:\n![bard/eb/aoa]:\n\t\tReturns a link to the story.\n!poll question;option1;option2;option3...:\n\t\tCreates a poll with up to ten options.\n!roles\n\t\tLists all of the grantable roles and their user counts.\n!addrole role\n\t\tAssigns the requested role.\n!removerole role\n\t\tRemoves the requested role.\n!roll xdy\n\t\tRolls dice and gives roll results.\n!source:\n\t\tReturns a link to my source code.";
+	public static final String HELP = "These are the commands I can run:\n![bard/eb/aoa]:\n\t\tReturns a link to the story.\n!poll question;option1;option2;option3...:\n\t\tCreates a poll with up to ten options.\n!roles\n\t\tLists all of the grantable roles and their user counts.\n!addrole role\n\t\tAssigns the requested role.\n!removerole role\n\t\tRemoves the requested role.\n!seteth role\n\t\tGenerates a request from Seteth.\n!roll xdy\n\t\tRolls dice and gives roll results.\n!source:\n\t\tReturns a link to my source code.";
 	//\n!play youtubeLink\n\t\tPlays the linked video\n!skip\n\t\tSkips the current song (requires half of the people in vc)
 	
 	public static final String SOURCE = "https://github.com/Spiderc/owainbot";

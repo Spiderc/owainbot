@@ -1,11 +1,21 @@
 package si.showdown.owainbot;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
+
+import javax.imageio.ImageIO;
+
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 import org.javacord.api.entity.channel.ServerTextChannel;
@@ -80,6 +90,8 @@ public class ServerInitializer implements ApplicationRunner {
 			} else if (event.getMessageContent().equals("!census")) {
 				CensusThread thread = new CensusThread(event);
 				thread.run();
+			} else if (event.getMessageContent().startsWith("!seteth ")) {
+				seteth(event);
 			}
 		});
 
@@ -258,6 +270,52 @@ public class ServerInitializer implements ApplicationRunner {
 
 		if (targetRole != null) {
 			user.removeRole(targetRole);
+		}
+	}
+
+	private static void seteth(MessageCreateEvent event) {
+		String message = event.getMessageContent().substring("!seteth ".length());
+		
+		String[] splitMessage = message.split(" ");
+		List<String> lines = new ArrayList<>();
+		
+		int line = 0;
+		int charCount = 0;
+		for(String word:splitMessage) {
+			if(charCount == 0) {
+				lines.add(word);
+				charCount = word.length();
+			} else if(charCount + word.length() > 45) {
+				line = line + 1;
+				lines.add(word);
+				charCount = word.length();
+			} else {
+				lines.set(line, lines.get(line) + " " + word);
+				charCount = charCount + 1 + word.length();
+			}
+		}
+
+		File file = new File("seteth.png");
+		try {
+			final BufferedImage image = ImageIO.read(new URL("https://i.imgur.com/6JTlReh.png"));
+
+			Graphics g = image.getGraphics();
+			g.setFont(new Font("Athelas Regular", Font.PLAIN, 18));
+			g.setColor(new Color(80, 74, 50));
+			
+			int height = 210;
+			for(String text:lines) {
+				g.drawString(text, 20, height);
+				height = height + 20;
+			}
+			
+			g.dispose();
+
+			ImageIO.write(image, "png", file);
+
+			event.getChannel().sendMessage(file);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }
