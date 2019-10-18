@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="si.showdown.owainbot.bean.Crit" table="crits">
+		<id name="id" type="java.lang.Integer">
+			<column name="ID" />
+			<generator class="native" />
+		</id>
+		<property name="quote" type="string">
+			<column name="QUOTE" />
+		</property>
+		<property name="character" type="string">
+			<column name="CHARACTER" />
+		</property>
+		<property name="game" type="string">
+			<column name="GAME" />
+		</property>
+	</class>
+</hibernate-mapping>

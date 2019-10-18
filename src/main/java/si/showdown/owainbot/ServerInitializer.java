@@ -31,6 +31,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.vdurmont.emoji.EmojiParser;
 
+import si.showdown.owainbot.bean.Crit;
+import si.showdown.owainbot.controller.CritController;
+
 @SpringBootApplication
 public class ServerInitializer implements ApplicationRunner {
 	public void run(ApplicationArguments args) throws FileNotFoundException, IOException {
@@ -92,6 +95,8 @@ public class ServerInitializer implements ApplicationRunner {
 				thread.run();
 			} else if (event.getMessageContent().startsWith("!seteth ")) {
 				seteth(event);
+			} else if (event.getMessageContent().equalsIgnoreCase("!crit")) {
+				crit(event);
 			}
 		});
 
@@ -317,5 +322,12 @@ public class ServerInitializer implements ApplicationRunner {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private static void crit(MessageCreateEvent event) {
+		CritController quoteController = new CritController();
+		Crit quote = quoteController.getRandomQuote();
+
+		event.getChannel().sendMessage("\"" + quote.getQuote() + "\" -" + quote.getCharacter() + " (" + quote.getGame() + ")");
 	}
 }
