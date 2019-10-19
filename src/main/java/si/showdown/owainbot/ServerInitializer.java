@@ -95,7 +95,7 @@ public class ServerInitializer implements ApplicationRunner {
 				thread.run();
 			} else if (event.getMessageContent().startsWith("!seteth ")) {
 				seteth(event);
-			} else if (event.getMessageContent().equalsIgnoreCase("!crit")) {
+			} else if (event.getMessageContent().startsWith("!crit")) {
 				crit(event);
 			}
 		});
@@ -325,8 +325,13 @@ public class ServerInitializer implements ApplicationRunner {
 	}
 
 	private static void crit(MessageCreateEvent event) {
+		String param = "";
+		if(!event.getMessageContent().equals("!crit")) {
+			param = event.getMessageContent().substring("!crit ".length());
+		}
+		
 		CritController quoteController = new CritController();
-		Crit quote = quoteController.getRandomQuote();
+		Crit quote = quoteController.getRandomQuote(param);
 
 		event.getChannel().sendMessage("\"" + quote.getQuote() + "\" -" + quote.getCharacter() + " (" + quote.getGame() + ")");
 	}
