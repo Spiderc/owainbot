@@ -162,7 +162,7 @@ public class ServerInitializer implements ApplicationRunner {
 	private static void createPoll(MessageCreateEvent event) {
 		String pollContents = event.getMessageContent().substring("!poll ".length());
 		String[] options = pollContents.split(";");
-		String[] reacts = { ":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:", ":nine:", ":ten:" };
+		String[] reacts = { ":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:", ":nine:", ":keycap_ten:" };
 
 		String pollMessage = Constants.POLL_INTRO.replace("POLL_USER", event.getMessageAuthor().getDisplayName());
 		for (int i = 0; i < options.length; i++) {
@@ -332,7 +332,12 @@ public class ServerInitializer implements ApplicationRunner {
 		
 		CritController quoteController = new CritController();
 		Crit quote = quoteController.getRandomQuote(param);
+		
+		String tag = "";
+		if(quote.getTag() != null && !quote.getTag().equals("")) {
+			tag = " [" + quote.getTag() + "]";
+		}
 
-		event.getChannel().sendMessage("\"" + quote.getQuote() + "\" -" + quote.getCharacter() + " (" + quote.getGame() + ")");
+		event.getChannel().sendMessage("\"" + quote.getQuote() + "\" -" + quote.getCharacter() + tag + " (" + quote.getGame() + ")");
 	}
 }

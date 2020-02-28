@@ -5,6 +5,7 @@ public class Crit {
 	private String quote;
 	private String character;
 	private String game;
+	private String tag;
 
 	public int getId() {
 		return id;
@@ -36,6 +37,14 @@ public class Crit {
 
 	public void setGame(String game) {
 		this.game = game;
+	}
+
+	public String getTag() {
+		return tag;
+	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
 	}
 
 }
